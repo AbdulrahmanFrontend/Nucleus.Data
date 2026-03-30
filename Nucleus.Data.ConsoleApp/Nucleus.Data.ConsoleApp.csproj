@@ -7,4 +7,18 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.9.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Nucleus.Data.Core\Nucleus.Data.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Nucleus.Data.DAL">
+      <HintPath>..\Nucleus.Data.DAL\bin\Debug\Nucleus.Data.DAL.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

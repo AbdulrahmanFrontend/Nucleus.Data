@@ -1,6 +1,5 @@
 <Solution>
-  <Project Path="Nucleus.Data.Abstractions/Nucleus.Data.Abstractions.csproj" Id="cfeea55e-3660-4469-a53a-2f98bb70ba73" />
   <Project Path="Nucleus.Data.ConsoleApp/Nucleus.Data.ConsoleApp.csproj" />
   <Project Path="Nucleus.Data.Core/Nucleus.Data.Core.csproj" Id="a9c327c9-f31c-43b9-ac51-ddf41020f1da" />
-  <Project Path="Nucleus.Data.Tests/Nucleus.Data.Tests.csproj" Id="2410ab8a-e85a-4759-87e0-bb4351be959f" />
+  <Project Path="Nucleus.Data.DAL/Nucleus.Data.DAL.csproj" Id="c5271750-5369-4cf8-84ec-667783528646" />
 </Solution>
