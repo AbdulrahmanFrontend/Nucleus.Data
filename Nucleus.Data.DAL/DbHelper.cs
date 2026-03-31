@@ -107,5 +107,17 @@ namespace Nucleus.Data.DAL
                 }
             }
         }
+        public static List<T> Query<T>(CommandType Type, string CommandText,
+            SqlParameter[] Parameters = null) where T : new()
+        {
+            DataTable dt = DbHelper.GetDataTable(Type, CommandText);
+            List<T> ObjsList = new List<T>();
+            foreach (DataRow dr in dt.Rows)
+            {
+                T Obj = clsMapper.Map<T>(dr);
+                ObjsList.Add(Obj);
+            }
+            return ObjsList;
+        }
     }
 }

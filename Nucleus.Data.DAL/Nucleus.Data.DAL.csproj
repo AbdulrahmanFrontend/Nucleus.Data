@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="clsDataAccessSettings.cs" />
-    <Compile Include="clsUserData.cs" />
+    <Compile Include="clsMapper.cs" />
     <Compile Include="DbHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
