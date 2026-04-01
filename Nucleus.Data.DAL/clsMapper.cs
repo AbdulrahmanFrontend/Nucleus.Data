@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Nucleus.Data.Core;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,9 +16,12 @@ namespace Nucleus.Data.DAL
             T obj = new T();
             foreach (var prop in typeof(T).GetProperties())
             {
-                if (row.Table.Columns.Contains(prop.Name))
+                var Attr = prop.GetCustomAttribute<ColumnAttribute>();
+                string ColumnName = Attr != null ? Attr.ColumnName : prop.Name;
+
+                if (row.Table.Columns.Contains(ColumnName))
                 {
-                    var Value = row[prop.Name];
+                    var Value = row[ColumnName];
                     var propType = Nullable.GetUnderlyingType(prop.PropertyType)
                         ?? prop.PropertyType;
                     var SafeValue = Convert.ChangeType(Value, propType);
