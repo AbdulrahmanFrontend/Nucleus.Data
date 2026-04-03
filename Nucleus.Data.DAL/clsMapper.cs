@@ -22,9 +22,7 @@ namespace Nucleus.Data.DAL
                 if (row.Table.Columns.Contains(ColumnName))
                 {
                     var Value = row[ColumnName];
-                    var propType = Nullable.GetUnderlyingType(prop.PropertyType)
-                        ?? prop.PropertyType;
-                    var SafeValue = Convert.ChangeType(Value, propType);
+                    var SafeValue = Convert.ChangeType(Value, prop.PropertyType);
                     prop.SetValue(obj, SafeValue);
                 }
             }
