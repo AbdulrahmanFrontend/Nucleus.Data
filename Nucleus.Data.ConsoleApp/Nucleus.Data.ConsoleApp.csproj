@@ -8,11 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.5-beta1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.9.1" />
+    <PackageReference Include="System.Text.Json" Version="11.0.0-preview.2.26159.112" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Nucleus.Data.BLL\Nucleus.Data.BLL.csproj" />
     <ProjectReference Include="..\Nucleus.Data.Core\Nucleus.Data.Core.csproj" />
+    <ProjectReference Include="..\Nucleus.Data.DAL\Nucleus.Data.DAL.csproj" />
   </ItemGroup>
 
   <ItemGroup>

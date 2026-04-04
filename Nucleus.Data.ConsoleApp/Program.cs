@@ -1,4 +1,5 @@
-﻿using Nucleus.Data.Core;
+﻿using Nucleus.Data.BLL;
+using Nucleus.Data.Core;
 using Nucleus.Data.DAL;
 using System.Data;
 using System.Linq;
@@ -9,8 +10,7 @@ namespace Nucleus.Data.ConsoleApp
     {
         static void Main(string[] args)
         {
-            var Users = DbHelper.Query<clsUser>(CommandType.StoredProcedure,
-                "sp_GetUsers");
+            var Users = clsUser.GetUsers();
             Users.ForEach(u =>
             {
                 Console.WriteLine($"ID: {u.UserID}, Name: {u.UserName}, Email: {u.Email}");

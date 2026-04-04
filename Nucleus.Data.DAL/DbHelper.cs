@@ -86,8 +86,6 @@ namespace Nucleus.Data.DAL
                 }
             }
         }
-        private static Dictionary<string, object> _Cache =
-            new Dictionary<string, object>();
         public static int ExecuteNonQuery(CommandType Type, string CommandText, 
             SqlParameter[] parameters = null)
         {
@@ -99,7 +97,6 @@ namespace Nucleus.Data.DAL
                     try
                     {
                         con.Open();
-                        _Cache.Clear();
                         return cmd.ExecuteNonQuery();
                     }
                     catch(Exception ex)
@@ -109,26 +106,6 @@ namespace Nucleus.Data.DAL
                     }
                 }
             }
-        }
-        public static List<T> Query<T>(CommandType Type, string CommandText,
-            SqlParameter[] Parameters = null) where T : new()
-        {
-            string ParamsKey = Parameters == null ? 
-                "NULL" : string.Join("_", Parameters.Select(p => p.Value));
-            string Key = CommandText + "_" + typeof(T).Name + "_" + ParamsKey;
-            if (_Cache.ContainsKey(Key))
-            {
-                return (List<T>)_Cache[Key];
-            }
-            DataTable dt = DbHelper.GetDataTable(Type, CommandText, Parameters);
-            List<T> ObjsList = new List<T>();
-            foreach (DataRow dr in dt.Rows)
-            {
-                T Obj = clsMapper.Map<T>(dr);
-                ObjsList.Add(Obj);
-            }
-            _Cache[Key] = ObjsList;
-            return ObjsList;
         }
     }
 }

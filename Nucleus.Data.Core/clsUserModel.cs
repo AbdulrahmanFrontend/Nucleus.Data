@@ -7,7 +7,8 @@ using System.Reflection;
 
 namespace Nucleus.Data.Core
 {
-    public class clsUser
+    [Serializable]
+    public class clsUserModel
     {
         [RequiredAttribute]
         [ColumnAttribute("User_ID")]

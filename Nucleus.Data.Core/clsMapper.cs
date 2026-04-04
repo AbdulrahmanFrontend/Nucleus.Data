@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nucleus.Data.DAL
+namespace Nucleus.Data.Core
 {
     public class clsMapper
     {
