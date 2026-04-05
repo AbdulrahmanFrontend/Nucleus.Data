@@ -8,47 +8,22 @@ using System.Text;
 using System.Threading.Tasks;
 using Nucleus.Data.Core;
 using System.IO;
+using LL;
 
 namespace Nucleus.Data.DAL
 {
     public class clsDataManager
     {
-        public static Dictionary<string, string> Cache = 
-            new Dictionary<string, string>();
-        private static readonly string _FilePath = "QueryCache.json";
-        private static void _LoadCache()
-        {
-            if (!File.Exists(_FilePath))
-            {
-                Cache = new Dictionary<string, string>();
-            }
-            else
-            {
-                var Json = File.ReadAllText(_FilePath);
-                Cache = JsonSerializer.Deserialize<Dictionary<string, string>>
-                    (Json) ?? new Dictionary<string, string>();
-            }
-        }
-        static clsDataManager()
-        {
-            _LoadCache();
-        }
-        private static void _SaveCache()
-        {
-            var Json = JsonSerializer.Serialize(Cache);
-            File.WriteAllText(_FilePath, Json);
-        }
         public static List<T> Query<T>(CommandType Type, string CommandText,
             SqlParameter[] Parameters = null) where T : new()
         {
-            string ParamsKey = Parameters == null ?
-                "NULL" : string.Join("_", Parameters.Select(p => p.Value));
+            string ParamsKey = Parameters == null ? "NULL" : string.Join("_",
+                Parameters.Select(p => p.ParameterName + "_" + p.Value));
             string Key = CommandText + "_" + typeof(T).Name + "_" + ParamsKey;
-            _LoadCache();
-            if (Cache.ContainsKey(Key))
+            if (clsCacheManager.Cache.TryGetValue(Key, out var Json))
             {
-                return JsonSerializer.Deserialize<List<T>>(Cache[Key]) ?? 
-                    new List<T>();
+                var Result = JsonSerializer.Deserialize<List<T>>(Json);
+                return Result ?? new List<T>();
             }
             DataTable dt = DbHelper.GetDataTable(Type, CommandText, Parameters);
             List<T> ObjsList = new List<T>();
@@ -57,8 +32,8 @@ namespace Nucleus.Data.DAL
                 T Obj = clsMapper.Map<T>(dr);
                 ObjsList.Add(Obj);
             }
-            Cache[Key] = JsonSerializer.Serialize(ObjsList);
-            _SaveCache();
+            clsCacheManager.Cache[Key] = JsonSerializer.Serialize(ObjsList);
+            clsCacheManager.SaveCache();
             return ObjsList;
         }
     }

@@ -81,6 +81,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="clsCacheManager.cs" />
     <Compile Include="clsDataAccessSettings.cs" />
     <Compile Include="clsDataManager.cs" />
     <Compile Include="clsUserData.cs" />

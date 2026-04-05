@@ -97,6 +97,7 @@ namespace Nucleus.Data.DAL
                     try
                     {
                         con.Open();
+                        clsCacheManager.Cache.Clear();
                         return cmd.ExecuteNonQuery();
                     }
                     catch(Exception ex)

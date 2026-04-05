@@ -14,5 +14,13 @@ namespace Nucleus.Data.BLL
         {
             return clsUserData.GetUsers();
         }
+        public static bool UpdateUser(clsUserModel User)
+        {
+            return clsUserData.UpdateUser(User);
+        }
+        public static List<clsUserModel> GetUsers(int? UserID)
+        {
+            return clsUserData.GetUsers(UserID);
+        }
     }
 }

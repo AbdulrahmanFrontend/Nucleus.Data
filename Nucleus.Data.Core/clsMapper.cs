@@ -22,7 +22,8 @@ namespace Nucleus.Data.Core
                 if (row.Table.Columns.Contains(ColumnName))
                 {
                     var Value = row[ColumnName];
-                    var SafeValue = Convert.ChangeType(Value, prop.PropertyType);
+                    var PropType = Nullable.GetUnderlyingType(prop.PropertyType)?? prop.PropertyType;
+                    var SafeValue = Convert.ChangeType(Value, PropType);
                     prop.SetValue(obj, SafeValue);
                 }
             }
