@@ -10,7 +10,7 @@ namespace Nucleus.Data.ConsoleApp
     {
         static void Main(string[] args)
         {
-            var Users = clsUser.GetUsers().Where(u => u.UserID > 1).ToList();
+            var Users = clsUser.GetUsers();
             Users.ForEach(u =>
             {
                 Console.WriteLine($"ID: {u.UserID}, Name: {u.UserName}, Email: {u.Email}");

@@ -14,7 +14,13 @@ namespace Nucleus.Data.DAL
         public static List<clsUserModel> GetUsers()
         {
             return clsDataManager.Query<clsUserModel>
-                (CommandType.StoredProcedure, "sp_GetUsers");
+                (CommandType.StoredProcedure, "sp_GetUsers", null, 
+                Options => 
+                {
+                    Options.Page = 2;
+                    Options.PageSize = 2;
+                    Options.UseCache = true;
+                });
         }
         public static bool UpdateUser(clsUserModel User)
         {
@@ -41,7 +47,8 @@ namespace Nucleus.Data.DAL
                 { Value = UserID }
             };
             return clsDataManager.Query<clsUserModel>
-                (CommandType.StoredProcedure, "sp_GetUsersByUserID", Parameters);
+                (CommandType.StoredProcedure, "sp_GetUsersByUserID", Parameters,
+                Options => Options.UseCache = false);
         }
     }
 }

@@ -15,25 +15,48 @@ namespace Nucleus.Data.DAL
     public class clsDataManager
     {
         public static List<T> Query<T>(CommandType Type, string CommandText,
-            SqlParameter[] Parameters = null) where T : new()
+            SqlParameter[] Parameters = null, 
+            Action<clsQueryOptions> OptionsAction = null) where T : new()
         {
+            var Options = new clsQueryOptions { UseCache = true };
+            OptionsAction?.Invoke(Options);
+
             string ParamsKey = Parameters == null ? "NULL" : string.Join("_",
                 Parameters.Select(p => p.ParameterName + "_" + p.Value));
-            string Key = CommandText + "_" + typeof(T).Name + "_" + ParamsKey;
-            if (clsCacheManager.Cache.TryGetValue(Key, out var Json))
+            string Key = $"{CommandText}_{typeof(T).Name}_{ParamsKey}_Page_{Options.Page}_{Options.PageSize}";
+
+            List<T> ObjsList;
+            if (Options.UseCache &&
+                clsCacheManager.Cache.TryGetValue(Key, out var Json))
             {
                 var Result = JsonSerializer.Deserialize<List<T>>(Json);
                 return Result ?? new List<T>();
             }
-            DataTable dt = DbHelper.GetDataTable(Type, CommandText, Parameters);
-            List<T> ObjsList = new List<T>();
-            foreach (DataRow dr in dt.Rows)
+            else
             {
-                T Obj = clsMapper.Map<T>(dr);
-                ObjsList.Add(Obj);
+                DataTable dt = 
+                    DbHelper.GetDataTable(Type, CommandText, Parameters);
+                ObjsList = new List<T>();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    T Obj = clsMapper.Map<T>(dr);
+                    ObjsList.Add(Obj);
+                }
+
+                if (Options.UseCache)
+                {
+                    clsCacheManager.Cache[Key] = 
+                        JsonSerializer.Serialize(ObjsList);
+                    clsCacheManager.SaveCache();
+                }
             }
-            clsCacheManager.Cache[Key] = JsonSerializer.Serialize(ObjsList);
-            clsCacheManager.SaveCache();
+
+            if (Options.Page > 0 && Options.PageSize > 0)
+            {
+                ObjsList = ObjsList.Skip((Options.Page - 1) * Options.PageSize)
+                    .Take(Options.PageSize).ToList();
+            }
+
             return ObjsList;
         }
     }
