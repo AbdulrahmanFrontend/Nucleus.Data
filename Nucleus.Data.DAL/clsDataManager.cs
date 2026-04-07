@@ -18,12 +18,29 @@ namespace Nucleus.Data.DAL
             SqlParameter[] Parameters = null, 
             Action<clsQueryOptions> OptionsAction = null) where T : new()
         {
-            var Options = new clsQueryOptions { UseCache = true };
+            var Options = new clsQueryOptions 
+            {
+                UseCache = true, Page = 1, PageSize = 0 
+            };
             OptionsAction?.Invoke(Options);
-
+            
+            if(Options.Page > 0 && Options.PageSize > 0)
+            {
+                List<SqlParameter> ParamsList =
+                    Parameters?.ToList() ?? new List<SqlParameter>();
+                ParamsList.Add(new SqlParameter("@Page", SqlDbType.Int) 
+                { 
+                    Value = Options.Page
+                });
+                ParamsList.Add(new SqlParameter("@PageSize", SqlDbType.Int)
+                { 
+                    Value = Options.PageSize
+                });
+                Parameters = ParamsList.ToArray();
+            }
             string ParamsKey = Parameters == null ? "NULL" : string.Join("_",
                 Parameters.Select(p => p.ParameterName + "_" + p.Value));
-            string Key = $"{CommandText}_{typeof(T).Name}_{ParamsKey}_Page_{Options.Page}_{Options.PageSize}";
+            string Key = $"{CommandText}_{typeof(T).Name}_{ParamsKey}";
 
             List<T> ObjsList;
             if (Options.UseCache &&
@@ -49,12 +66,6 @@ namespace Nucleus.Data.DAL
                         JsonSerializer.Serialize(ObjsList);
                     clsCacheManager.SaveCache();
                 }
-            }
-
-            if (Options.Page > 0 && Options.PageSize > 0)
-            {
-                ObjsList = ObjsList.Skip((Options.Page - 1) * Options.PageSize)
-                    .Take(Options.PageSize).ToList();
             }
 
             return ObjsList;
