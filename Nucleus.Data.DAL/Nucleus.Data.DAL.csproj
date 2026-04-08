@@ -89,6 +89,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LoggingLayer\LoggingLayer.csproj">
+      <Project>{870083f5-06b3-4396-9ea9-920969d333b1}</Project>
+      <Name>LoggingLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Nucleus.Data.Core\Nucleus.Data.Core.csproj">
       <Project>{a9c327c9-f31c-43b9-ac51-ddf41020f1da}</Project>
       <Name>Nucleus.Data.Core</Name>

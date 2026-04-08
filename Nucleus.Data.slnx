@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="LoggingLayer/LoggingLayer.csproj" Id="870083f5-06b3-4396-9ea9-920969d333b1" />
   <Project Path="Nucleus.Data.BLL/Nucleus.Data.BLL.csproj" Id="51ad4c54-0f8e-4c5b-997d-dc94253989e0" />
   <Project Path="Nucleus.Data.ConsoleApp/Nucleus.Data.ConsoleApp.csproj" />
   <Project Path="Nucleus.Data.Core/Nucleus.Data.Core.csproj" Id="a9c327c9-f31c-43b9-ac51-ddf41020f1da" />

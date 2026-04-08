@@ -1,4 +1,4 @@
-﻿using LL;
+﻿using LoggingLayer;
 using Nucleus.Data.DAL;
 using Nucleus.Data.Core;
 using System;
@@ -50,10 +50,10 @@ namespace Nucleus.Data.DAL
                             }
                         }
                     }
-                    catch (Exception ex)
+                    catch (SqlException ex)
                     {
                         Logger.LogError("GetDataTable Failed;", ex);
-                        throw;
+                        return new DataTable();
                     }
                 }
             }
@@ -78,10 +78,10 @@ namespace Nucleus.Data.DAL
                         con.Open();
                         return cmd.ExecuteScalar();
                     }
-                    catch(Exception ex)
+                    catch(SqlException ex)
                     {
                         Logger.LogError("GetScalar Failed;", ex);
-                        throw;
+                        return null;
                     }
                 }
             }
@@ -100,10 +100,10 @@ namespace Nucleus.Data.DAL
                         clsCacheManager.Cache.Clear();
                         return cmd.ExecuteNonQuery();
                     }
-                    catch(Exception ex)
+                    catch(SqlException ex)
                     {
                         Logger.LogError("ExecuteNonQuery Failed;", ex);
-                        throw;
+                        return 0;
                     }
                 }
             }

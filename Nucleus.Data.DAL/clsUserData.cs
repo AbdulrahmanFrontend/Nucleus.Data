@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Nucleus.Data.Core;
 using System.Data.SqlClient;
 using System.Data;
+using LoggingLayer;
 
 namespace Nucleus.Data.DAL
 {
@@ -22,11 +23,8 @@ namespace Nucleus.Data.DAL
                     Options.UseCache = true;
                 });
         }
-        public static bool UpdateUser(clsUserModel User)
+        public static clsResult UpdateUser(clsUserModel User)
         {
-            string Query = @"UPDATE Users
-                SET UserName = @UserName, Email = @Email
-                WHERE UserID = @UserID;";
             SqlParameter[] Parameters = new SqlParameter[]
             {
                 new SqlParameter("@UserID", SqlDbType.Int)
@@ -36,8 +34,12 @@ namespace Nucleus.Data.DAL
                 new SqlParameter("@Email", SqlDbType.NVarChar, 50)
                 { Value = User.Email },
             };
-            return DbHelper.ExecuteNonQuery
-                (CommandType.Text, Query, Parameters) > 0;
+            clsResult Result = new clsResult();
+            Result.IsSuccess = DbHelper.ExecuteNonQuery(CommandType.StoredProcedure,
+                    "sp_UpdateUser", Parameters) > 0;
+            Result.Message = Result.IsSuccess ?
+                "User updated successfully." : "No changes were made.";
+            return Result;
         }
         public static List<clsUserModel> GetUsers(int? UserID)
         {

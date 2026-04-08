@@ -79,6 +79,7 @@
   <ItemGroup>
     <Compile Include="clsMapper.cs" />
     <Compile Include="clsQueryOptions.cs" />
+    <Compile Include="clsResult.cs" />
     <Compile Include="clsUserModel.cs" />
     <Compile Include="clsValidator.cs" />
     <Compile Include="ColumnAttribute.cs" />
